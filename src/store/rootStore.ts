@@ -1,10 +1,12 @@
-import { TestStore } from './testStore'
-
+import { TestStore } from "./testStore";
+import UserStore from "./user";
 export class RootStore {
-  testStore: TestStore
+  testStore: TestStore;
+  userStore: UserStore;
   constructor() {
-    this.testStore = new TestStore(this)
+    this.testStore = new TestStore(this);
+    this.userStore = new UserStore(this);
   }
 }
 
-export type TRootStore = RootStore
+export type TRootStore = RootStore;

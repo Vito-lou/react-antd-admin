@@ -1,22 +1,21 @@
+import React from 'react';
 import { Suspense, lazy } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, RouteObject } from 'react-router-dom';
 
 import { CircleLoading } from '@/components/loading';
 import SimpleLayout from '@/layouts/simple';
 
-import AuthGuard from '../components/auth-guard';
+import AuthGuard from './authGuard';
 
-import { AppRouteObject } from '#/router';
-
-const Page403 = lazy(() => import('@/pages/sys/error/Page403'));
-const Page404 = lazy(() => import('@/pages/sys/error/Page404'));
-const Page500 = lazy(() => import('@/pages/sys/error/Page500'));
+const Page403 = lazy(() => import('@/pages/error/403'));
+const Page404 = lazy(() => import('@/pages/error/404'));
+const Page500 = lazy(() => import('@/pages/error/500'));
 
 /**
  * error routes
  * 403, 404, 500
  */
-export const ErrorRoutes: AppRouteObject = {
+export const ErrorRoutes: RouteObject = {
     element: (
         <AuthGuard>
             <SimpleLayout>
