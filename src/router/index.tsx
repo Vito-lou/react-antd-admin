@@ -1,43 +1,56 @@
-import React, { lazy } from "react";
+import React, { lazy, Suspense, ComponentType, LazyExoticComponent } from "react";
 import {
   Navigate,
   RouteObject,
   createBrowserRouter,
   RouterProvider,
+  useRoutes,
 } from "react-router-dom";
-import { ErrorRoutes } from "./errorRoutes";
+import { CircleLoading } from "@/components/loading";
 import Layout from "antd/es/layout/layout";
 import { About, Home } from "../components";
-import AuthGuard from "./authGuard";
-import { usePermissionRoutes } from "@/hooks";
-const LoginRoute: RouteObject = {
-  path: "/login",
-  Component: lazy(() => import("@/pages/login")),
-};
 
-const PAGE_NOT_FOUND_ROUTE: RouteObject = {
-  path: '*',
-  element: <Navigate to="/404" replace />,
-};
-
-// const HomeComponent: RouteObject = {
-//   path: "/",
-//   element: <Home />,
-// };
+const lazyLoad = (Component: React.LazyExoticComponent<any>) => (
+  <Suspense fallback={<CircleLoading />}>
+    <Component />
+  </Suspense>
+)
 
 
-export default function Router() {
-  const permissionRoutes = usePermissionRoutes();
-  const asyncRoutes: RouteObject = {
-    path: '/',
-    element: (
-      <AuthGuard>
-        <Layout />
-      </AuthGuard>
-    ),
-    children: [{ index: true, element: <Navigate to={'/'} replace /> }, ...permissionRoutes],
-  };
-  const routes = [LoginRoute, asyncRoutes, ErrorRoutes, PAGE_NOT_FOUND_ROUTE];
-  const router = createBrowserRouter(routes);
-  return <RouterProvider router={router} />;
+const Page403 = lazy(() => import('@/pages/error/403'));
+const Page404 = lazy(() => import('@/pages/error/404'));
+const Page500 = lazy(() => import('@/pages/error/500'));
+
+
+export const constantRoutes: RouteObject[] = [
+  // {
+  //   path: "/login",
+  //   element: <Navigate to="/login" />
+  // },
+  {
+    path: "/login",
+    Component: lazy(() => import("@/pages/login")),
+  },
+  {
+    path: "/",
+    element: <Home />,
+  },
+  // {
+  //   path: "500",
+  //   element: lazyLoad(Page500)
+  // },
+  // {
+  //   path: "403",
+  //   element: lazyLoad(Page403)
+  // },
+  {
+    path: '*',
+    element: lazyLoad(Page404),
+  }
+]
+const Router = () => {
+  const routes = useRoutes(constantRoutes)
+  return routes
 }
+
+export default Router
