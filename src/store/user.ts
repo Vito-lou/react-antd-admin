@@ -8,10 +8,8 @@ type TRoles = String[];
 class UserStore {
   rootStore: TRootStore;
   token = getToken();
-  name = "";
-  avatar = "";
-  introduction = "";
-  roles: TRoles = [];
+  userInfo: {};
+  menuList: [];
   constructor(rootStore: TRootStore) {
     this.rootStore = rootStore;
     makeAutoObservable(this);
@@ -22,21 +20,14 @@ class UserStore {
     setToken(token);
   }
 
-  setIntroduction(introduction: string) {
-    this.introduction = introduction;
+  setUserInfo(userInfo) {
+    this.userInfo = userInfo;
   }
 
-  setName(name: string) {
-    this.name = name;
+  setMenuList(menuList) {
+    this.menuList = menuList;
   }
 
-  setAvatar(avatar: string) {
-    this.avatar = avatar;
-  }
-
-  setRoles(roles: TRoles) {
-    this.roles = roles;
-  }
   login(userInfo: TUser): Promise<void> {
     const { username, password } = userInfo;
     return new Promise((resolve, reject) => {
@@ -61,18 +52,11 @@ class UserStore {
           if (!data) {
             reject("Verification failed, please Login again.");
           }
-
-          const { roles, name, avatar, introduction } = data;
-
-          if (!roles || roles.length <= 0) {
-            reject("getInfo: roles must be a non-null array!");
-          }
-
-          this.setRoles(roles);
-          this.setName(name);
-          this.setAvatar(avatar);
-          this.setIntroduction(introduction);
-          resolve(data);
+          console.log("what data", data);
+          const { userInfo, menuList } = data;
+          this.setUserInfo(userInfo);
+          this.setMenuList(menuList);
+          resolve(menuList);
         })
         .catch((error) => {
           reject(error);
@@ -85,7 +69,6 @@ class UserStore {
       logout()
         .then(() => {
           this.setToken("");
-          this.setRoles([]);
           removeToken();
           // resetRouter();
           resolve();
@@ -99,7 +82,6 @@ class UserStore {
   resetToken(): Promise<void> {
     return new Promise((resolve) => {
       this.setToken("");
-      this.setRoles([]);
       removeToken();
       resolve();
     });

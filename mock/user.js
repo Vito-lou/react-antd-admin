@@ -13,7 +13,34 @@ const users = {
     roles: ['admin'],
     introduction: 'I am a super administrator',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    name: 'Super Admin'
+    name: 'Super Admin',
+    userInfo: {
+      roles: ['admin'],
+      introduction: 'I am a super administrator',
+      avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+      name: 'Super Admin',
+    },
+    menuList: [
+      {
+        id: '1',
+        name: ''
+      },
+      {
+        title: '系统管理', // 菜单名称
+        path: '/system', // 路由
+        name: '/system', // 唯一标识
+        icon: 'in-vue-xitongguanli', // 图标
+        children: [
+          {
+            title: '用户管理', // 菜单名称
+            path: 'user', // 路由
+            name: '/system/user', // 唯一标识
+            icon: 'in-vue-yonghu', // 图标
+            componentKey: 'system/user/UserListIndex'
+          }
+        ]
+      }
+    ]
   },
   'editor-token': {
     roles: ['editor'],
