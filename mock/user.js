@@ -22,24 +22,51 @@ const users = {
     },
     menuList: [
       {
-        id: '1',
-        name: ''
+        id: "1",
+        path: '/dashboard',
+        auth: true,
+        title: '首页',
+        pageKey: '/dashboard',
+        iconClass: '',
+        parentId: '0',
       },
       {
-        title: '系统管理', // 菜单名称
-        path: '/system', // 路由
-        name: '/system', // 唯一标识
-        icon: 'in-vue-xitongguanli', // 图标
-        children: [
-          {
-            title: '用户管理', // 菜单名称
-            path: 'user', // 路由
-            name: '/system/user', // 唯一标识
-            icon: 'in-vue-yonghu', // 图标
-            componentKey: 'system/user/UserListIndex'
-          }
-        ]
-      }
+        id: "2",
+        path: '/system',
+        auth: true,
+        title: '系统管理',
+        iconClass: '',
+        parentId: '0'
+      },
+      {
+        id: "3",
+        path: '/system/menu',
+        auth: true,
+        title: '菜单管理',
+        pageKey: '/system/menu',
+        iconClass: '',
+        parentId: '2',
+      },
+      {
+        id: "4",
+        path: '/system/theme',
+        auth: true,
+        title: '主题管理-隐藏菜单',
+        pageKey: '/system/theme',
+        hide: true,
+        iconClass: '',
+        parentId: '2',
+      },
+      {
+        id: "5",
+        path: '/test',
+        auth: true,
+        title: '测试隐藏菜单',
+        pageKey: '/test',
+        hide: true,
+        iconClass: '',
+        parentId: '0',
+      },
     ]
   },
   'editor-token': {

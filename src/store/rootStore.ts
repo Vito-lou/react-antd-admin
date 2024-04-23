@@ -1,17 +1,14 @@
-import { TestStore } from "./testStore";
 import UserStore from "./user";
-import PermissionStore from "./permission";
 import AuthStore from "./auth";
+import MenuStore from "./menu";
 export class RootStore {
-  testStore: TestStore;
   userStore: UserStore;
-  permissionStore: PermissionStore;
   authStore: AuthStore;
+  menuStore: MenuStore;
   constructor() {
-    this.testStore = new TestStore(this);
     this.userStore = new UserStore(this);
-    this.permissionStore = new PermissionStore(this);
     this.authStore = new AuthStore(this);
+    this.menuStore = new MenuStore(this);
   }
 }
 

@@ -2,14 +2,13 @@ import { makeAutoObservable } from "mobx";
 import { login, logout, getInfo } from "@/api/user";
 import type { TRootStore } from "./rootStore";
 import { getToken, setToken, removeToken } from "@/utils/auth";
-import { TUser } from "../types";
+import { TUser, IUserInfo, IMenu, IUserData } from "../types";
 
-type TRoles = String[];
 class UserStore {
   rootStore: TRootStore;
   token = getToken();
-  userInfo: {};
-  menuList: [];
+  userInfo: IUserInfo = {};
+  menuList: IMenu[] = [];
   constructor(rootStore: TRootStore) {
     this.rootStore = rootStore;
     makeAutoObservable(this);
@@ -20,11 +19,11 @@ class UserStore {
     setToken(token);
   }
 
-  setUserInfo(userInfo) {
+  setUserInfo(userInfo: IUserInfo) {
     this.userInfo = userInfo;
   }
 
-  setMenuList(menuList) {
+  setMenuList(menuList: IMenu[]) {
     this.menuList = menuList;
   }
 
@@ -43,7 +42,7 @@ class UserStore {
     });
   }
 
-  getInfo() {
+  getInfo(): Promise<IUserData> {
     return new Promise((resolve, reject) => {
       getInfo(this.token)
         .then((response) => {
@@ -52,11 +51,11 @@ class UserStore {
           if (!data) {
             reject("Verification failed, please Login again.");
           }
-          console.log("what data", data);
           const { userInfo, menuList } = data;
+          console.log("menud", menuList);
           this.setUserInfo(userInfo);
           this.setMenuList(menuList);
-          resolve(menuList);
+          resolve(data as IUserData);
         })
         .catch((error) => {
           reject(error);
