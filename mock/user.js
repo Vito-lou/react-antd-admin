@@ -27,7 +27,7 @@ const users = {
         auth: true,
         title: '首页',
         pageKey: '/dashboard',
-        iconClass: '',
+        iconClass: 'MailOutlined',
         parentId: '0',
       },
       {
@@ -35,7 +35,7 @@ const users = {
         path: '/system',
         auth: true,
         title: '系统管理',
-        iconClass: '',
+        iconClass: 'AppstoreOutlined',
         parentId: '0'
       },
       {
@@ -53,7 +53,7 @@ const users = {
         auth: true,
         title: '主题管理-隐藏菜单',
         pageKey: '/system/theme',
-        hide: true,
+        isHidden: false,
         iconClass: '',
         parentId: '2',
       },
@@ -63,7 +63,7 @@ const users = {
         auth: true,
         title: '测试隐藏菜单',
         pageKey: '/test',
-        hide: true,
+        isHidden: true,
         iconClass: '',
         parentId: '0',
       },

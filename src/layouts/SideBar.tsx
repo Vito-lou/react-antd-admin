@@ -11,12 +11,13 @@ import type { MenuProps } from 'antd';
 import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { useStore } from '@/hooks';
+import { toJS } from "mobx";
 const SideBar = observer(() => {
     const navigate = useNavigate()
     const store = useStore()
 
     useEffect(() => {
-        store?.menuStore.routesToMenus(store.userStore.menuList)
+        store?.menuStore.routesToMenus(toJS(store.userStore.menuList))
     }, [])
     const menuItems = store?.menuStore.menuItems;
     console.log('menu item ', menuItems)
@@ -32,23 +33,7 @@ const SideBar = observer(() => {
                 mode="inline"
                 defaultSelectedKeys={['1']}
                 onClick={onClick}
-                items={[
-                    {
-                        key: '/system/menu',
-                        icon: <UserOutlined />,
-                        label: 'nav 1',
-                    },
-                    {
-                        key: '/dashboard',
-                        icon: <VideoCameraOutlined />,
-                        label: 'nav 2',
-                    },
-                    {
-                        key: '3',
-                        icon: <UploadOutlined />,
-                        label: 'nav 3',
-                    },
-                ]}
+                items={store?.menuStore.menuItems}
             />
         </>
     )

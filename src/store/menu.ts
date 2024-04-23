@@ -1,26 +1,26 @@
 import React from "react";
 import { makeAutoObservable } from "mobx";
 import type { TRootStore } from "./rootStore";
-import { getToken, setToken, removeToken } from "@/utils/auth";
-import { TUser, IUserInfo, IMenu, IUserData } from "../types";
-import type { MenuProps } from "antd";
-import { RouteObject } from "react-router-dom";
-import * as Icon from "@ant-design/icons";
-type MenuItem = Required<MenuProps>["items"][number];
+import { IMenu, IAntdMenu } from "../types";
+import * as Icons from "@ant-design/icons";
 
+// 动态渲染 Icon 图标
+const customIcons: { [key: string]: any } = Icons;
+const addIcon = (name: string) => {
+  return React.createElement(customIcons[name]);
+};
 const generateMenus = (menuList: IMenu[], parentId = "0") => {
   return menuList
-    .filter((item) => item.parentId === parentId && !item.hidden)
+    .filter((item) => item.parentId === parentId && !item.isHidden)
     .map((item) => {
-      const childMenus: MenuItem[] = generateMenus(menuList, item.id);
-      console.log("child", childMenus);
-      const menuItem: MenuItem = {
-        key: item.id,
+      const childMenus: IAntdMenu[] = generateMenus(menuList, item.id);
+      const menuItem: IAntdMenu = {
+        key: item.path,
         label: item.title,
-        // icon: item.iconClass ? React.createElement(item.iconClass) : ''
+        icon: item.iconClass ? addIcon(item.iconClass) : "",
       };
 
-      if (childMenus.length > 0) {
+      if (childMenus.length > 0 && menuItem) {
         menuItem.children = childMenus;
       }
       return menuItem;
@@ -28,20 +28,18 @@ const generateMenus = (menuList: IMenu[], parentId = "0") => {
 };
 class MenuStore {
   rootStore: TRootStore;
-  token = getToken();
-  userInfo: IUserInfo = {};
-  menuItems: MenuItem[] = [];
+  menuItems: IAntdMenu[] = [];
   constructor(rootStore: TRootStore) {
     this.rootStore = rootStore;
     makeAutoObservable(this);
   }
 
-  setMenuItems(menuItems: MenuItem[]) {
+  setMenuItems(menuItems: IAntdMenu[]) {
     this.menuItems = menuItems;
   }
 
   routesToMenus(menuList: IMenu[]) {
-    const menuItems: MenuItem[] = generateMenus(menuList);
+    const menuItems: IAntdMenu[] = generateMenus(menuList);
     this.setMenuItems(menuItems);
     console.log(this.menuItems);
   }
